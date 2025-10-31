@@ -10,8 +10,8 @@ function RouteComponent() {
   return (
     <SidebarProvider>
       <AppSidebar />
+      <SidebarTrigger />
       <main>
-        <SidebarTrigger />
         <Outlet />
       </main>
     </SidebarProvider>

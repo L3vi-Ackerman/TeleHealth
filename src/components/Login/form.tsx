@@ -45,15 +45,19 @@ export default function LoginForm() {
   }
 
   return (
-    <section className="w-[25rem]">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <Form {...form}>
         <motion.form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-3xl mx-auto py-10 p-8 rounded-lg shadow-xl bg-card text-card-foreground font-sans"
+          className="space-y-8 w-[25rem] py-10 p-8 rounded-lg shadow-xl bg-card text-card-foreground font-sans"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
+          <h1 className="flex items-center justify-center text-5xl font-extrabold tracking-tight mb-8 text-center relative bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-transparent bg-clip-text group">
+            TeleHealth
+          </h1>
+
           {['email', 'password'].map((name, i) => (
             <FormField
               key={name}
@@ -104,6 +108,6 @@ export default function LoginForm() {
           </motion.div>
         </motion.form>
       </Form>
-    </section>
+    </div>
   )
 }
