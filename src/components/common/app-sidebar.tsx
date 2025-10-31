@@ -56,21 +56,24 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent className="h-full">
+      <SidebarContent className="h-full animate__animated animate__fadeInLeft">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl text-primary my-4">
+          <SidebarGroupLabel className="text-2xl text-primary my-4 animate__animated animate__fadeInDown animate__delay-1s">
             TeleHealth
           </SidebarGroupLabel>
-          <SidebarGroupContent className="text-4xl space-y-4">
-            <SidebarMenu className="text-4xl">
+          <SidebarGroupContent className="space-y-4">
+            <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem
-                  className="text-4xl space-y-4"
+                  className="animate__animated animate__fadeInLeft animate__delay-[0.1s*index]"
                   key={item.title}
                 >
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <a
+                      href={item.url}
+                      className="flex items-center gap-2 transform transition-transform duration-300 hover:scale-105 hover:text-[var(--sidebar-accent-foreground)]"
+                    >
+                      <item.icon className="transition-colors duration-300 group-hover/menu-item:text-[var(--sidebar-accent-foreground)]" />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
