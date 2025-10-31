@@ -7,17 +7,14 @@ import './index.css'
 
 import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx'
 
-// ✅ Create QueryClient instance
 const queryClient = new QueryClient()
 
-// ✅ Get the Query Provider context (this already contains queryClient)
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
 
-// ✅ Create the router
 const router = createRouter({
   routeTree,
   context: {
-    ...TanStackQueryProviderContext, // contains queryClient already
+    ...TanStackQueryProviderContext,
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -37,7 +34,6 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      {/* ✅ Correct prop name: queryClient */}
       <TanStackQueryProvider.Provider queryClient={queryClient}>
         <RouterProvider router={router} />
       </TanStackQueryProvider.Provider>
