@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useCreateDepartmentMutation } from '@/hooks/department/queries'
+import { useCreateDepartmentMutation } from '@/hooks/department/mutations'
 import { useGetMe } from '@/hooks/auth/me/queries'
 
 const formSchema = z.object({

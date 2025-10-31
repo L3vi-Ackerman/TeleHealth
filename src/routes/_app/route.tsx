@@ -10,7 +10,7 @@ function RouteComponent() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
+      <main className="rounded-3xl border-1 shadow-sm m-4 p-4 w-full h-full">
         <SidebarTrigger />
         <Outlet />
       </main>

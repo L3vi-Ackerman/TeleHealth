@@ -9,10 +9,10 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
     onSuccess: (data) => {
-      localStorage.setItem('access', data.access)
-      localStorage.setItem('refresh', data.refresh)
+      localStorage.setItem('access_token', data.access)
+      localStorage.setItem('refresh_token', data.refresh)
       toast.success('Login Successful')
-      navigate({ to: '/dashboard' })
+      navigate({ to: '/hospitals' })
     },
     onError: () => {
       toast.error('Invalid Credentials')
