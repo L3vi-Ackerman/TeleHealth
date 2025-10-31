@@ -45,63 +45,65 @@ export default function LoginForm() {
   }
 
   return (
-    <Form {...form}>
-      <motion.form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10 p-8 rounded-lg shadow-xl bg-card text-card-foreground font-sans"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-      >
-        {['email', 'password'].map((name, i) => (
-          <FormField
-            key={name}
-            control={form.control}
-            name={name as 'email' | 'password'}
-            render={({ field }) => (
-              <motion.div
-                custom={i}
-                variants={fieldVariant}
-                initial="hidden"
-                animate="visible"
-              >
-                <FormItem>
-                  <FormLabel>
-                    {name === 'email' ? 'E-mail' : 'Password'}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={
-                        name === 'email'
-                          ? 'Enter your email address'
-                          : '*********'
-                      }
-                      type={name}
-                      {...field}
-                      className="border border-border focus:border-ring focus:ring focus:ring-ring/30 transition-all"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </motion.div>
-            )}
-          />
-        ))}
-
-        <motion.div
-          custom={2}
-          variants={fieldVariant}
-          initial="hidden"
-          animate="visible"
+    <section className="w-[25rem]">
+      <Form {...form}>
+        <motion.form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 max-w-3xl mx-auto py-10 p-8 rounded-lg shadow-xl bg-card text-card-foreground font-sans"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
         >
-          <Button
-            type="submit"
-            className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md shadow transition-all hover:bg-primary/90"
+          {['email', 'password'].map((name, i) => (
+            <FormField
+              key={name}
+              control={form.control}
+              name={name as 'email' | 'password'}
+              render={({ field }) => (
+                <motion.div
+                  custom={i}
+                  variants={fieldVariant}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <FormItem>
+                    <FormLabel>
+                      {name === 'email' ? 'E-mail' : 'Password'}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={
+                          name === 'email'
+                            ? 'Enter your email address'
+                            : '*********'
+                        }
+                        type={name}
+                        {...field}
+                        className="border border-border focus:border-ring focus:ring focus:ring-ring/30 transition-all"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </motion.div>
+              )}
+            />
+          ))}
+
+          <motion.div
+            custom={2}
+            variants={fieldVariant}
+            initial="hidden"
+            animate="visible"
           >
-            Submit
-          </Button>
-        </motion.div>
-      </motion.form>
-    </Form>
+            <Button
+              type="submit"
+              className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-md shadow transition-all hover:bg-primary/90"
+            >
+              Submit
+            </Button>
+          </motion.div>
+        </motion.form>
+      </Form>
+    </section>
   )
 }
