@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router'
 import React from 'react'
 
 interface User {
@@ -45,8 +46,12 @@ interface DoctorCardProps {
 }
 
 export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+  const navigate = useNavigate()
   return (
-    <div className="doctor-card border p-4 rounded mb-4">
+    <div
+      className="doctor-card border p-4 rounded mb-4 cursor-pointer"
+      onClick={() => navigate({ to: `/doctors/${doctor.id}/bookings` })}
+    >
       <div className="flex items-center gap-4">
         <img
           src={doctor.image ?? '/default-doctor.png'}

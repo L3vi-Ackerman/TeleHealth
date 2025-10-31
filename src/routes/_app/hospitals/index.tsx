@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useGetHospitalList } from '@/hooks/hospital/queries'
 import { MapPin, Phone, Calendar } from 'lucide-react'
+import DepartmentSearch from '@/components/departments/filter'
 export const Route = createFileRoute('/_app/hospitals/')({
   component: RouteComponent,
 })
@@ -19,11 +20,13 @@ export interface Hospital {
 function RouteComponent() {
   const { data: hospitals } = useGetHospitalList()
   return (
-    <div>
+    <div className="container mx-auto p-6 space-y-8">
       <div className="flex items-center justify-between space-y-2 border-b">
         <div>
           <h1 className="text-3xl font-medium my-4">Hospitals</h1>
         </div>
+
+        <DepartmentSearch />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {hospitals?.data?.results?.map((h: Hospital) => (

@@ -6,10 +6,10 @@ export const Route = createFileRoute('/_app/appointments/')({
 
 function RouteComponent() {
   return (
-    <div>
+    <div className="container mx-auto p-6">
       <div className="flex items-center justify-between space-y-2 border-b">
         <div>
-          <h1 className="text-3xl font-medium my-4">Hospitals</h1>
+          <h1 className="text-3xl font-medium my-4">Appointments</h1>
         </div>
       </div>
     </div>

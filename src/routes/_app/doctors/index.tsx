@@ -3,6 +3,7 @@ import { useGetDoctorsList } from '@/hooks/doctor/queries'
 
 import { DoctorCard } from '@/components/doctor/card'
 import type { Doctor } from '@/components/doctor/card'
+import DepartmentSearch from '@/components/departments/filter'
 export const Route = createFileRoute('/_app/doctors/')({
   component: RouteComponent,
 })
@@ -28,8 +29,11 @@ function RouteComponent() {
   const doctors = data?.data?.results || []
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Doctors </h1>
+    <div className="container mx-auto space-y-8 p-6">
+      <div className="flex items-center justify-between border-b ">
+        <h1 className="text-3xl font-medium my-4">Doctors</h1>
+        <DepartmentSearch />
+      </div>
 
       {doctors.length === 0 ? (
         <p className="text-gray-500">No doctors found in this department.</p>
