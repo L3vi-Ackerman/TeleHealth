@@ -12,25 +12,31 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useLoginMutation } from '@/hooks/auth/login/mutations'
+import { useCreateDepartmentMutation } from '@/hooks/department/queries'
+import { useGetMe } from '@/hooks/auth/me/queries'
 
 const formSchema = z.object({
-  email: z.string().min(1),
-  password: z.string().trim().min(1),
+  name: z.string().min(1),
 })
 
-export default function LoginForm() {
-  const { mutate: loginMutation } = useLoginMutation()
+export default function DepartmentForm() {
+  const { mutate } = useCreateDepartmentMutation()
+
+  const { data: profile } = useGetMe()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       console.log(values)
-      loginMutation(values)
+      const payload = {
+        name: values.name,
+        hospital: profile?.data.id,
+      }
+      mutate(payload)
     } catch (error) {
-      console.error('Form submission error', error)
       toast.error('Failed to submit the form. Please try again.')
     }
   }
@@ -39,34 +45,20 @@ export default function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10"
+        className="space-y-8 w-full mx-auto"
       >
         <FormField
           control={form.control}
-          name="email"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>E-mail</FormLabel>
+              <FormLabel>Department</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter you email address"
-                  type="email"
+                  placeholder="Enter Department Name"
+                  type="text"
                   {...field}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="*********" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
