@@ -9,13 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
+import { Route as AuthLoginIndexRouteImport } from './routes/_auth/login/index'
+import { Route as AppHospitalsIndexRouteImport } from './routes/_app/hospitals/index'
+import { Route as AppDoctorsIndexRouteImport } from './routes/_app/doctors/index'
+import { Route as AppDepartmentsIndexRouteImport } from './routes/_app/departments/index'
+import { Route as AppDashboardIndexRouteImport } from './routes/_app/dashboard/index'
+import { Route as AppAppointmentsIndexRouteImport } from './routes/_app/appointments/index'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -23,49 +28,119 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
+const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthLoginRouteRoute,
+} as any)
+const AppHospitalsIndexRoute = AppHospitalsIndexRouteImport.update({
+  id: '/hospitals/',
+  path: '/hospitals/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDoctorsIndexRoute = AppDoctorsIndexRouteImport.update({
+  id: '/doctors/',
+  path: '/doctors/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDepartmentsIndexRoute = AppDepartmentsIndexRouteImport.update({
+  id: '/departments/',
+  path: '/departments/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAppointmentsIndexRoute = AppAppointmentsIndexRouteImport.update({
+  id: '/appointments/',
+  path: '/appointments/',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/login': typeof LoginIndexRoute
+  '/login': typeof AuthLoginRouteRouteWithChildren
+  '/appointments': typeof AppAppointmentsIndexRoute
+  '/dashboard': typeof AppDashboardIndexRoute
+  '/departments': typeof AppDepartmentsIndexRoute
+  '/doctors': typeof AppDoctorsIndexRoute
+  '/hospitals': typeof AppHospitalsIndexRoute
+  '/login/': typeof AuthLoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/login': typeof LoginIndexRoute
+  '/appointments': typeof AppAppointmentsIndexRoute
+  '/dashboard': typeof AppDashboardIndexRoute
+  '/departments': typeof AppDepartmentsIndexRoute
+  '/doctors': typeof AppDoctorsIndexRoute
+  '/hospitals': typeof AppHospitalsIndexRoute
+  '/login': typeof AuthLoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/login/': typeof LoginIndexRoute
+  '/_app': typeof AppRouteRouteWithChildren
+  '/_auth/login': typeof AuthLoginRouteRouteWithChildren
+  '/_app/appointments/': typeof AppAppointmentsIndexRoute
+  '/_app/dashboard/': typeof AppDashboardIndexRoute
+  '/_app/departments/': typeof AppDepartmentsIndexRoute
+  '/_app/doctors/': typeof AppDoctorsIndexRoute
+  '/_app/hospitals/': typeof AppHospitalsIndexRoute
+  '/_auth/login/': typeof AuthLoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/appointments'
+    | '/dashboard'
+    | '/departments'
+    | '/doctors'
+    | '/hospitals'
+    | '/login/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login'
-  id: '__root__' | '/' | '/about' | '/login/'
+  to:
+    | '/'
+    | '/appointments'
+    | '/dashboard'
+    | '/departments'
+    | '/doctors'
+    | '/hospitals'
+    | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/_auth/login'
+    | '/_app/appointments/'
+    | '/_app/dashboard/'
+    | '/_app/departments/'
+    | '/_app/doctors/'
+    | '/_app/hospitals/'
+    | '/_auth/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  LoginIndexRoute: typeof LoginIndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
+  AuthLoginRouteRoute: typeof AuthLoginRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -75,20 +150,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login/': {
-      id: '/login/'
+    '/_auth/login': {
+      id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginIndexRouteImport
+      preLoaderRoute: typeof AuthLoginRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_auth/login/': {
+      id: '/_auth/login/'
+      path: '/'
+      fullPath: '/login/'
+      preLoaderRoute: typeof AuthLoginIndexRouteImport
+      parentRoute: typeof AuthLoginRouteRoute
+    }
+    '/_app/hospitals/': {
+      id: '/_app/hospitals/'
+      path: '/hospitals'
+      fullPath: '/hospitals'
+      preLoaderRoute: typeof AppHospitalsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/doctors/': {
+      id: '/_app/doctors/'
+      path: '/doctors'
+      fullPath: '/doctors'
+      preLoaderRoute: typeof AppDoctorsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/departments/': {
+      id: '/_app/departments/'
+      path: '/departments'
+      fullPath: '/departments'
+      preLoaderRoute: typeof AppDepartmentsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/dashboard/': {
+      id: '/_app/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/appointments/': {
+      id: '/_app/appointments/'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AppAppointmentsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
   }
 }
 
+interface AppRouteRouteChildren {
+  AppAppointmentsIndexRoute: typeof AppAppointmentsIndexRoute
+  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
+  AppDepartmentsIndexRoute: typeof AppDepartmentsIndexRoute
+  AppDoctorsIndexRoute: typeof AppDoctorsIndexRoute
+  AppHospitalsIndexRoute: typeof AppHospitalsIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppAppointmentsIndexRoute: AppAppointmentsIndexRoute,
+  AppDashboardIndexRoute: AppDashboardIndexRoute,
+  AppDepartmentsIndexRoute: AppDepartmentsIndexRoute,
+  AppDoctorsIndexRoute: AppDoctorsIndexRoute,
+  AppHospitalsIndexRoute: AppHospitalsIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
+interface AuthLoginRouteRouteChildren {
+  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+}
+
+const AuthLoginRouteRouteChildren: AuthLoginRouteRouteChildren = {
+  AuthLoginIndexRoute: AuthLoginIndexRoute,
+}
+
+const AuthLoginRouteRouteWithChildren = AuthLoginRouteRoute._addFileChildren(
+  AuthLoginRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  LoginIndexRoute: LoginIndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
+  AuthLoginRouteRoute: AuthLoginRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -16,3 +16,7 @@ export const login = async ({
   })
   return res.data
 }
+
+export const getMe = async () => {
+  return await api.get('/gatekeeper/user/me/')
+}
