@@ -1,0 +1,4 @@
+{
+  "*.{ts,tsx,js,jsx}": ["pnpm format:write", "bash -c 'pnpm type-check'"],
+  "*.{json,md,css,scss,yaml,yml}": ["pnpm format:write"]
+}
