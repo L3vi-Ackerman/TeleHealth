@@ -17,7 +17,7 @@ import { motion } from 'framer-motion'
 
 const formSchema = z.object({
   email: z.string().min(1),
-  password: z.string().trim().min(8),
+  password: z.string().trim().min(1),
 })
 
 export default function LoginForm() {

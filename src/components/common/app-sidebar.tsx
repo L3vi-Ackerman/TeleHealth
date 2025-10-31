@@ -1,11 +1,4 @@
-import {
-  LayoutDashboard,
-  Hospital,
-  Stethoscope,
-  Calendar,
-  Settings,
-  Blocks,
-} from 'lucide-react'
+import { Hospital, Stethoscope, Calendar, Settings, Blocks } from 'lucide-react'
 
 import {
   Sidebar,
@@ -20,11 +13,6 @@ import {
 
 // Menu items.
 const items = [
-  {
-    title: 'Dashboard',
-    url: '/dashboard',
-    icon: LayoutDashboard,
-  },
   {
     title: 'Hospitals',
     url: '/hospitals',

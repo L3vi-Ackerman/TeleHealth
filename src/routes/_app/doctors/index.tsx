@@ -5,5 +5,13 @@ export const Route = createFileRoute('/_app/doctors/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_app/doctors/"!</div>
+  return (
+    <div>
+      <div className="flex items-center justify-between space-y-2 border-b">
+        <div>
+          <h1 className="text-3xl font-medium my-4">Doctors</h1>
+        </div>
+      </div>
+    </div>
+  )
 }
