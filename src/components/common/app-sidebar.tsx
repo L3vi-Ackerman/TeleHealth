@@ -40,10 +40,10 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent className="h-full animate__animated animate__fadeInLeft">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl text-primary my-4 animate__animated animate__fadeInDown animate__delay-1s">
+          <SidebarGroupLabel className="text-4xl font-semibold text-primary my-4 animate__animated animate__fadeInDown animate__delay-1s">
             TeleHealth
           </SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-4">
+          <SidebarGroupContent className="space-y-4 mt-4">
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem
@@ -53,10 +53,12 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className="flex items-center gap-2 transform transition-transform duration-300 hover:scale-105 hover:text-[var(--sidebar-accent-foreground)]"
+                      className="py-2 flex items-center gap-2 transform transition-transform duration-300 hover:scale-105 hover:text-[var(--sidebar-accent-foreground)]"
                     >
                       <item.icon className="transition-colors duration-300 group-hover/menu-item:text-[var(--sidebar-accent-foreground)]" />
-                      <span>{item.title}</span>
+                      <span className="font-semibold text-lg">
+                        {item.title}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
