@@ -1,20 +1,17 @@
-import DepartmentSearch from '@/components/departments/filter'
-import DepartmentList from '@/components/departments/list'
 import { createFileRoute } from '@tanstack/react-router'
+import DepartmentList from '@/components/departments/list'
+import DepartmentSearch from '@/components/departments/filter'
 export const Route = createFileRoute('/_app/departments/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between space-y-2 border-b">
-        <div>
-          <h1 className="text-3xl font-medium my-4">Departments</h1>
-        </div>
+    <div className="container mx-auto p-6 space-y-8">
+      <div className="flex items-center justify-between border-b ">
+        <h1 className="text-3xl font-medium my-4">Departments</h1>
         <DepartmentSearch />
       </div>
-
       <DepartmentList />
     </div>
   )

@@ -12,7 +12,7 @@ export default function DepartmentSearch() {
     <div className="space-y-4 w-[400px]">
       <div className="flex gap-2">
         <Input
-          placeholder="Search Department..."
+          placeholder="Search..."
           value={search ?? ''}
           onChange={(e) => setSearch(e.target.value)}
         />

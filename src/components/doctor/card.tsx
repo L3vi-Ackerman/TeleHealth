@@ -1,67 +1,81 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { useNavigate } from '@tanstack/react-router'
+import React from 'react'
+
+interface User {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  role: string
+}
+
+interface Hospital {
+  id: string
+  name: string
+  contact: string
+  address: string
+  description: string | null
+  image: string | null
+  created_at: string
+  updated_at: string
+}
 
 interface Department {
   id: string
   name: string
-  hospital: string
+  created_at: string
+  updated_at: string
+  hospital: Hospital | string
 }
 
-interface Doctor {
+export interface Doctor {
   id: string
-  user: string
-  department: Department
+  user: User
   contact: string
   experience_years: number
   is_available: boolean
-  image: string
+  image: string | null
+  created_at: string
+  updated_at: string
+  department: Department
+  hospital?: Hospital
 }
 
 interface DoctorCardProps {
   doctor: Doctor
 }
 
-export function DoctorCard({ doctor }: DoctorCardProps) {
+export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+  const navigate = useNavigate()
   return (
-    <Card className="w-full max-w-md shadow-lg">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>
-            Dr. {doctor.user} {/* Replace with real name if you have */}
-          </CardTitle>
-          <Badge variant={doctor.is_available ? 'default' : 'destructive'}>
-            {doctor.is_available ? 'Available' : 'Unavailable'}
-          </Badge>
+    <div
+      className="doctor-card border p-4 rounded mb-4 cursor-pointer"
+      onClick={() => navigate({ to: `/doctors/${doctor.id}/bookings` })}
+    >
+      <div className="flex items-center gap-4">
+        <img
+          src={doctor.image ?? '/default-doctor.png'}
+          alt={`Dr. ${doctor.user?.first_name ?? ''} ${doctor.user?.last_name ?? ''}`}
+          className="w-16 h-16 rounded-full object-cover"
+        />
+        <div>
+          <h3 className="text-lg font-semibold">
+            Dr. {doctor.user?.first_name ?? 'Unknown'}{' '}
+            {doctor.user?.last_name ?? ''}
+          </h3>
+          <p>Department: {doctor.department?.name ?? 'N/A'}</p>
+          <p>
+            Hospital:{' '}
+            {typeof doctor.hospital === 'object' && doctor.hospital
+              ? doctor.hospital.name
+              : 'N/A'}
+          </p>
+          <p>Contact: {doctor.contact}</p>
+          <p>Experience: {doctor.experience_years} years</p>
+          <p>Status: {doctor.is_available ? 'Available' : 'Unavailable'}</p>
         </div>
-        <CardDescription>{doctor.department.name}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {doctor.image && (
-          <img
-            src={doctor.image}
-            alt={`Dr. ${doctor.user}`}
-            className="w-full h-48 object-cover rounded-md"
-          />
-        )}
-        <p>
-          <span className="font-semibold">Contact:</span> {doctor.contact}
-        </p>
-        <p>
-          <span className="font-semibold">Experience:</span>{' '}
-          {doctor.experience_years}{' '}
-          {doctor.experience_years > 1 ? 'years' : 'year'}
-        </p>
-        <p>
-          <span className="font-semibold">Hospital:</span>{' '}
-          {doctor.department.hospital}
-        </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
+export default DoctorCard
