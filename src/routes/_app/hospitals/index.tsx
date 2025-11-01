@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useGetHospitalList } from '@/hooks/hospital/queries'
-import { MapPin, Phone, Calendar } from 'lucide-react'
+import { MapPin, Phone } from 'lucide-react'
 import { motion } from 'framer-motion'
 import DepartmentSearch from '@/components/departments/filter'
 
@@ -35,7 +35,7 @@ function RouteComponent() {
       </div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -76,10 +76,10 @@ function RouteComponent() {
                   <Phone className="w-4 h-4 text-primary" />
                   {h?.contact}
                 </div>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-primary" />
                   {new Date(h.created_at).toLocaleDateString()}
-                </div>
+                </div> */}
               </div>
             </div>
           </motion.div>

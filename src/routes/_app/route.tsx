@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { AppSidebar } from '@/components/common/app-sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
@@ -11,7 +11,6 @@ import {
 } from '@/lib/api/notification'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-
 import Cookies from 'js-cookie'
 import { useNavigate } from '@tanstack/react-router'
 import { useGetMe } from '@/hooks/auth/me/queries'
@@ -31,14 +30,15 @@ function RouteComponent() {
   const navigate = useNavigate()
   const [userDropdownOpen, setUserDropdownOpen] = useState(false)
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false)
+  const notifRef = useRef<HTMLDivElement>(null)
+  const userRef = useRef<HTMLDivElement>(null)
   const { data: notificationData } = useGetNotifications()
+  const { data } = useGetMe()
+  const user = data?.data
 
   const unreadNotifications =
     notificationData?.data?.results.filter((n: any) => !n.is_read) || []
   const unreadCount = unreadNotifications?.length
-
-  const { data } = useGetMe()
-  const user = data?.data
 
   const { mutate: mutateNotification } = useMutation({
     mutationFn: markNotificationRead,
@@ -62,12 +62,6 @@ function RouteComponent() {
     },
   })
 
-  // const handleMarkReadAndNavigate = (notif: any) => {
-  //   if (!notif?.is_read) mutateNotification(notif?.id)
-  //   if (notif?.link) navigate({ to: notif.link })
-  //   setNotifDropdownOpen(false)
-  // }
-
   const handleLogout = () => {
     Cookies.remove('token')
     Cookies.remove('user')
@@ -77,9 +71,33 @@ function RouteComponent() {
     navigate({ to: '/' })
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        notifDropdownOpen &&
+        notifRef.current &&
+        !notifRef.current.contains(event.target as Node)
+      ) {
+        setNotifDropdownOpen(false)
+      }
+      if (
+        userDropdownOpen &&
+        userRef.current &&
+        !userRef.current.contains(event.target as Node)
+      ) {
+        setUserDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [notifDropdownOpen, userDropdownOpen])
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
+        {/* Dashboard side bar */}
         <AppSidebar />
         <div className="flex flex-col flex-1 h-screen overflow-hidden">
           <nav className="flex items-center justify-between w-full px-6 py-4 border-b bg-background shadow-sm">
@@ -88,7 +106,7 @@ function RouteComponent() {
             </div>
 
             <div className="flex items-center gap-6 relative">
-              <div className="relative">
+              <div className="relative" ref={notifRef}>
                 <button
                   onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
                   className="hover:bg-muted rounded-full p-2 cursor-pointer relative"
@@ -102,7 +120,7 @@ function RouteComponent() {
                 </button>
 
                 {notifDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-card border border-border rounded-lg shadow-lg text-foreground z-50 max-h-80 overflow-y-auto">
+                  <div className="absolute right-0 mt-2 w-[30rem] bg-card border border-border rounded-lg shadow-lg text-foreground z-50 max-h-80 overflow-y-auto">
                     <div className="flex justify-between items-center px-4 py-2 border-b border-border">
                       <span className="font-semibold text-sm">
                         Notifications
@@ -154,7 +172,7 @@ function RouteComponent() {
                 )}
               </div>
 
-              <div className="relative">
+              <div className="relative" ref={userRef}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center justify-center p-2 rounded-full hover:bg-muted cursor-pointer"
@@ -165,7 +183,7 @@ function RouteComponent() {
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-lg shadow-lg text-foreground z-50">
+                  <div className="absolute right-0 mt-2 w-[25rem] bg-card border border-border rounded-lg shadow-lg text-foreground z-50">
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
                       <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground w-8 h-8 flex items-center justify-center rounded-full font-bold text-xs">
                         {user?.first_name.charAt(0).toUpperCase()}
