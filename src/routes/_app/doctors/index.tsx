@@ -31,7 +31,9 @@ function RouteComponent() {
   return (
     <div className="container mx-auto space-y-8 p-6">
       <div className="flex items-center justify-between border-b ">
-        <h1 className="text-3xl font-medium my-4">Doctors</h1>
+        <h1 className="text-4xl font-extrabold bg-primary bg-clip-text text-transparent tracking-tight border-b pb-4">
+          Doctors
+        </h1>
         <DepartmentSearch />
       </div>
 

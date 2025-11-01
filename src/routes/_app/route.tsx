@@ -62,11 +62,11 @@ function RouteComponent() {
     },
   })
 
-  const handleMarkReadAndNavigate = (notif: any) => {
-    if (!notif?.is_read) mutateNotification(notif?.id)
-    if (notif?.link) navigate({ to: notif.link })
-    setNotifDropdownOpen(false)
-  }
+  // const handleMarkReadAndNavigate = (notif: any) => {
+  //   if (!notif?.is_read) mutateNotification(notif?.id)
+  //   if (notif?.link) navigate({ to: notif.link })
+  //   setNotifDropdownOpen(false)
+  // }
 
   const handleLogout = () => {
     Cookies.remove('token')
@@ -85,9 +85,6 @@ function RouteComponent() {
           <nav className="flex items-center justify-between w-full px-6 py-4 border-b bg-background shadow-sm">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-500 text-transparent bg-clip-text">
-                TeleHealth Dashboard
-              </h1>
             </div>
 
             <div className="flex items-center gap-6 relative">
@@ -127,25 +124,38 @@ function RouteComponent() {
                     ) : (
                       <ul className="flex flex-col">
                         {notificationData?.data?.results?.map((notif: any) => {
-                          // Convert URLs in message to <a> tags
-                          const messageWithLinks = notif.message.replace(
-                            /(https?:\/\/[^\s]+)/g,
-                            '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+                          const urlMatch =
+                            notif.message.match(/https?:\/\/[^\s]+/)
+                          const link = urlMatch ? urlMatch[0] : null
+                          const text = notif.message.replace(
+                            /https?:\/\/[^\s]+/,
+                            '',
                           )
 
                           return (
-                            <div
+                            <li
                               key={notif.id}
-                              className={`px-4 py-2 cursor-pointer hover:bg-accent/10 transition-colors duration-200 ${
+                              className={`cursor-pointer transition-colors duration-200 ${
                                 !notif.is_read
                                   ? 'bg-accent/5 font-semibold'
                                   : ''
                               }`}
-                              onClick={() => handleMarkReadAndNavigate(notif)}
-                              dangerouslySetInnerHTML={{
-                                __html: messageWithLinks,
+                              onClick={() => {
+                                if (!notif.is_read) mutateNotification(notif.id)
+                                if (link)
+                                  window.open(
+                                    link,
+                                    '_blank',
+                                    'noopener,noreferrer',
+                                  )
+                                setNotifDropdownOpen(false)
                               }}
-                            />
+                            >
+                              <div className="px-4 py-2 flex flex-col gap-1">
+                                <span>{text}</span>
+                                <span className="border-b border-border w-full" />
+                              </div>
+                            </li>
                           )
                         })}
                       </ul>
