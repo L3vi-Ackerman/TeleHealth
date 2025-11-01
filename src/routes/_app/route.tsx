@@ -124,13 +124,8 @@ function RouteComponent() {
                     ) : (
                       <ul className="flex flex-col">
                         {notificationData?.data?.results?.map((notif: any) => {
-                          const urlMatch =
-                            notif.message.match(/https?:\/\/[^\s]+/)
-                          const link = urlMatch ? urlMatch[0] : null
-                          const text = notif.message.replace(
-                            /https?:\/\/[^\s]+/,
-                            '',
-                          )
+                          const link = notif.meeting_link || null
+                          const text = notif.message
 
                           return (
                             <li
@@ -142,12 +137,7 @@ function RouteComponent() {
                               }`}
                               onClick={() => {
                                 if (!notif.is_read) mutateNotification(notif.id)
-                                if (link)
-                                  window.open(
-                                    link,
-                                    '_blank',
-                                    'noopener,noreferrer',
-                                  )
+                                if (link) window.open(link, '_blank')
                                 setNotifDropdownOpen(false)
                               }}
                             >
