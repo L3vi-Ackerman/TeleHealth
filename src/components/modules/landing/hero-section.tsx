@@ -9,7 +9,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="text-center md:text-left max-w-xl"
       >
-        <h1 className="text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
+        <h1 className="text-5xl font-bold tracking-tight mb-4 text-green-400">
           Welcome to TeleHealth
         </h1>
         <p className="text-xl text-[var(--foreground)] leading-relaxed">
@@ -27,14 +27,14 @@ const HeroSection = () => {
           type: 'spring',
           stiffness: 120,
         }}
-        className="flex justify-center"
+        className="rounded-l-lg flex justify-center"
       >
         <img
           src="/banner.jpg"
           alt="TeleHealth Banner"
           width={150}
           height={150}
-          className="drop-shadow-lg w-[45rem]"
+          className="rounded-bl-[300px] drop-shadow-lg w-[45rem]"
         />
       </motion.div>
     </header>
