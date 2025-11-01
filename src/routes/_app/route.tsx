@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { AppSidebar } from '@/components/common/app-sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { Bell, User, LogOut, Settings, Stethoscope } from 'lucide-react'
+import { Bell, User, LogOut, Stethoscope } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { useGetNotifications } from '@/hooks/notification/queries'
 import {
@@ -12,17 +12,20 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import Cookies from 'js-cookie'
+import { useNavigate } from '@tanstack/react-router'
+
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [userDropdownOpen, setUserDropdownOpen] = useState(false)
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false)
   const { data } = useGetNotifications()
 
-  console.log('Noti', data)
   const unreadNotifications =
     data?.data?.results.filter((n: any) => !n.is_read) || []
   const unreadCount = unreadNotifications?.length
@@ -54,30 +57,35 @@ function RouteComponent() {
     },
   })
 
-  const handleMarkRead = (id: string) => {
-    mutateNotification(id)
+  const handleMarkReadAndNavigate = (notif: any) => {
+    if (!notif?.is_read) mutateNotification(notif?.id)
+    if (notif?.link) navigate({ to: notif.link })
+    setNotifDropdownOpen(false)
   }
 
-  const handleMarkAllRead = () => {
-    mutateAllNotification()
+  const handleLogout = () => {
+    Cookies.remove('token')
+    Cookies.remove('user')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    queryClient.clear()
+    navigate({ to: '/' })
   }
 
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-
         <div className="flex flex-col flex-1 h-screen overflow-hidden">
           <nav className="flex items-center justify-between w-full px-6 py-4 border-b bg-background shadow-sm">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
-              <h1 className="text-xl font-bold bg-primary text-transparent bg-clip-text">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-500 text-transparent bg-clip-text">
                 TeleHealth Dashboard
               </h1>
             </div>
 
             <div className="flex items-center gap-6 relative">
-              {/* Notifications Dropdown */}
               <div className="relative">
                 <button
                   onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
@@ -99,7 +107,7 @@ function RouteComponent() {
                       </span>
                       {unreadCount > 0 && (
                         <button
-                          onClick={handleMarkAllRead}
+                          onClick={() => mutateAllNotification()}
                           className="text-xs text-primary hover:underline"
                         >
                           Mark all read
@@ -116,9 +124,7 @@ function RouteComponent() {
                         {data?.data?.results?.map((notif: any) => (
                           <li
                             key={notif?.id}
-                            onClick={() =>
-                              !notif?.is_read && handleMarkRead(notif?.id)
-                            }
+                            onClick={() => handleMarkReadAndNavigate(notif)}
                             className={`px-4 py-2 cursor-pointer hover:bg-accent/10 transition-colors duration-200 ${
                               !notif?.is_read ? 'bg-accent/5 font-semibold' : ''
                             }`}
@@ -132,7 +138,6 @@ function RouteComponent() {
                 )}
               </div>
 
-              {/* User Dropdown */}
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
@@ -160,7 +165,7 @@ function RouteComponent() {
                     <ul className="flex flex-col py-2">
                       <li>
                         <Link
-                          to="/"
+                          to="/hospitals"
                           className="flex items-center gap-2 px-4 py-2 hover:bg-accent/10 transition-colors duration-200"
                           onClick={() => setUserDropdownOpen(false)}
                         >
@@ -176,20 +181,11 @@ function RouteComponent() {
                           <User className="w-4 h-4" /> Profile
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          to="/"
-                          className="flex items-center gap-2 px-4 py-2 hover:bg-accent/10 transition-colors duration-200"
-                          onClick={() => setUserDropdownOpen(false)}
-                        >
-                          <Settings className="w-4 h-4" /> Settings
-                        </Link>
-                      </li>
                     </ul>
 
                     <div className="border-t border-border">
                       <button
-                        onClick={() => setUserDropdownOpen(false)}
+                        onClick={handleLogout}
                         className="w-full flex items-center gap-2 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors duration-200"
                       >
                         <LogOut className="w-4 h-4" /> Sign Out
