@@ -14,26 +14,31 @@ import { toast } from 'sonner'
 
 import Cookies from 'js-cookie'
 import { useNavigate } from '@tanstack/react-router'
+import { useGetMe } from '@/hooks/auth/me/queries'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
 })
+
+interface User {
+  first_name: string
+  last_name: string
+  email: string
+}
 
 function RouteComponent() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [userDropdownOpen, setUserDropdownOpen] = useState(false)
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false)
-  const { data } = useGetNotifications()
+  const { data: notificationData } = useGetNotifications()
 
   const unreadNotifications =
-    data?.data?.results.filter((n: any) => !n.is_read) || []
+    notificationData?.data?.results.filter((n: any) => !n.is_read) || []
   const unreadCount = unreadNotifications?.length
 
-  const user = {
-    name: 'John Doe',
-    email: 'john@example.com',
-  }
+  const { data } = useGetMe()
+  const user = data?.data
 
   const { mutate: mutateNotification } = useMutation({
     mutationFn: markNotificationRead,
@@ -115,23 +120,34 @@ function RouteComponent() {
                       )}
                     </div>
 
-                    {data?.data?.results?.length === 0 ? (
+                    {notificationData?.data?.results?.length === 0 ? (
                       <p className="text-xs text-muted-foreground px-4 py-2">
                         No notifications
                       </p>
                     ) : (
                       <ul className="flex flex-col">
-                        {data?.data?.results?.map((notif: any) => (
-                          <li
-                            key={notif?.id}
-                            onClick={() => handleMarkReadAndNavigate(notif)}
-                            className={`px-4 py-2 cursor-pointer hover:bg-accent/10 transition-colors duration-200 ${
-                              !notif?.is_read ? 'bg-accent/5 font-semibold' : ''
-                            }`}
-                          >
-                            {notif?.message}
-                          </li>
-                        ))}
+                        {notificationData?.data?.results?.map((notif: any) => {
+                          // Convert URLs in message to <a> tags
+                          const messageWithLinks = notif.message.replace(
+                            /(https?:\/\/[^\s]+)/g,
+                            '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+                          )
+
+                          return (
+                            <div
+                              key={notif.id}
+                              className={`px-4 py-2 cursor-pointer hover:bg-accent/10 transition-colors duration-200 ${
+                                !notif.is_read
+                                  ? 'bg-accent/5 font-semibold'
+                                  : ''
+                              }`}
+                              onClick={() => handleMarkReadAndNavigate(notif)}
+                              dangerouslySetInnerHTML={{
+                                __html: messageWithLinks,
+                              }}
+                            />
+                          )
+                        })}
                       </ul>
                     )}
                   </div>
@@ -143,21 +159,23 @@ function RouteComponent() {
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center justify-center p-2 rounded-full hover:bg-muted cursor-pointer"
                 >
-                  <User className="h-[1.2rem] w-[1.2rem]" />
+                  <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground w-8 h-8 flex items-center justify-center rounded-full font-bold text-xs">
+                    {user?.first_name.charAt(0).toUpperCase()}
+                  </div>
                 </button>
 
                 {userDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-lg shadow-lg text-foreground z-50">
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
                       <div className="bg-gradient-to-br from-primary to-accent text-primary-foreground w-8 h-8 flex items-center justify-center rounded-full font-bold text-xs">
-                        {user.name.charAt(0).toUpperCase()}
+                        {user?.first_name.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold">
-                          {user.name}
+                          {user?.first_name} {user?.last_name}
                         </span>
                         <span className="text-xs text-muted-foreground">
-                          {user.email}
+                          {user?.email}
                         </span>
                       </div>
                     </div>
