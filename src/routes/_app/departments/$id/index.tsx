@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { motion } from 'framer-motion'
 import { useGetDoctorsList } from '@/hooks/doctor/queries'
 import { DoctorCard } from '@/components/doctor/card'
 import type { Doctor } from '@/components/doctor/card'
@@ -8,40 +9,47 @@ export const Route = createFileRoute('/_app/departments/$id/')({
 })
 
 function RouteComponent() {
-  const params = Route.useParams()
-  const { id } = params
+  const { id } = Route.useParams()
   const { data, isPending, isError } = useGetDoctorsList({ department: id })
 
-  if (isPending) {
+  if (isPending)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg">Loading doctors...</p>
+        <p className="text-lg animate-pulse">Loading doctors...</p>
       </div>
     )
-  }
 
-  if (isError) {
+  if (isError)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-lg text-red-500">Error loading doctors</p>
       </div>
     )
-  }
 
   const doctors = data?.data?.results || []
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Doctors in Department</h1>
+    <div className="container mx-auto px-6 py-10 space-y-8 animate-fade-in">
+      <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent tracking-tight border-b pb-4">
+        Doctors in Department
+      </h1>
 
       {doctors.length === 0 ? (
         <p className="text-gray-500">No doctors found in this department.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06 } },
+          }}
+        >
           {doctors.map((doctor: Doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   )

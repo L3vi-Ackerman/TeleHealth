@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { useNavigate } from '@tanstack/react-router'
 import React from 'react'
 
@@ -47,35 +48,52 @@ interface DoctorCardProps {
 
 export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const navigate = useNavigate()
+  const fullName = `Dr. ${doctor.user?.first_name ?? 'Unknown'} ${
+    doctor.user?.last_name ?? ''
+  }`
+
   return (
-    <div
-      className="doctor-card border p-4 rounded mb-4 cursor-pointer"
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.3 }}
       onClick={() => navigate({ to: `/doctors/${doctor.id}/bookings` })}
+      className="group cursor-pointer rounded-xl border border-border bg-card shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 p-4">
         <img
           src={doctor.image ?? '/default-doctor.png'}
-          alt={`Dr. ${doctor.user?.first_name ?? ''} ${doctor.user?.last_name ?? ''}`}
-          className="w-16 h-16 rounded-full object-cover"
+          alt={fullName}
+          className="w-20 h-20 rounded-full object-cover border border-border"
         />
-        <div>
-          <h3 className="text-lg font-semibold">
-            Dr. {doctor.user?.first_name ?? 'Unknown'}{' '}
-            {doctor.user?.last_name ?? ''}
+        <div className="space-y-1">
+          <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+            {fullName}
           </h3>
-          <p>Department: {doctor.department?.name ?? 'N/A'}</p>
-          <p>
+          <p className="text-sm text-muted-foreground">
+            Department: {doctor.department?.name ?? 'N/A'}
+          </p>
+          <p className="text-sm text-muted-foreground">
             Hospital:{' '}
             {typeof doctor.hospital === 'object' && doctor.hospital
               ? doctor.hospital.name
               : 'N/A'}
           </p>
-          <p>Contact: {doctor.contact}</p>
-          <p>Experience: {doctor.experience_years} years</p>
-          <p>Status: {doctor.is_available ? 'Available' : 'Unavailable'}</p>
         </div>
       </div>
-    </div>
+
+      <div className="border-t border-border px-4 py-3 bg-muted/30 text-sm text-muted-foreground flex justify-between">
+        <span>Experience: {doctor.experience_years} yrs</span>
+        <span
+          className={`font-medium ${
+            doctor.is_available ? 'text-green-600' : 'text-red-500'
+          }`}
+        >
+          {doctor.is_available ? 'Available' : 'Unavailable'}
+        </span>
+      </div>
+    </motion.div>
   )
 }
-export default DoctorCard
