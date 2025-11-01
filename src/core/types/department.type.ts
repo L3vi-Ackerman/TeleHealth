@@ -9,4 +9,5 @@ export type ListDepartment = {
   hospital: string
   name: string
   updated_at: string
+  image: string
 }

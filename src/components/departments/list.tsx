@@ -16,7 +16,7 @@ const DepartmentList = () => {
 
   return (
     <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       initial="hidden"
       animate="visible"
       variants={{
@@ -27,16 +27,23 @@ const DepartmentList = () => {
       {data?.data?.results?.map((dept: ListDepartment) => (
         <motion.div
           key={dept.id}
-          className="p-6 bg-card border border-border rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer animate-fade-in-up"
+          className="flex items-center p-4 bg-card border border-border rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer animate-fade-in-up"
           variants={{
-            hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 20 },
           }}
           onClick={() => navigate({ to: `/departments/${dept.id}` })}
         >
-          <h2 className="text-lg font-semibold text-foreground mb-1">
-            {dept.name}
-          </h2>
+          <img
+            src={dept.image}
+            alt={dept.name}
+            className="w-12 h-12 rounded-full object-cover border border-border mr-4"
+          />
+          <div className="flex-1">
+            <h2 className="text-md font-semibold text-foreground">
+              {dept.name}
+            </h2>
+          </div>
         </motion.div>
       ))}
     </motion.div>
