@@ -37,7 +37,7 @@ export function LandingNav() {
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
-                className="relative text-gray-700 dark:text-gray-200 font-medium py-2 px-4 rounded-full cursor-pointer hover:text-green-500 transition-colors duration-300 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-green-400 hover:after:w-full after:transition-all after:duration-300 after:rounded"
+                className="relative text-black font-medium py-2 px-4 rounded-full cursor-pointer hover:text-green-500 transition-colors duration-300 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-green-400 hover:after:w-full after:transition-all after:duration-300 after:rounded"
               >
                 {label}
               </button>

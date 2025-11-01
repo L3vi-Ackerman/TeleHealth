@@ -3,7 +3,7 @@ interface CreateReport {
   diagnosis: string
   prescription: string
   patient: string
-  doctor: string
+  doctor?: string
 }
 
 export interface UpdateReport {
@@ -23,6 +23,13 @@ export const createReport = async (data: CreateReport) => {
 export const updateReport = async (data: UpdateReport) => {
   return await api.post(`/report/${data.id}/update/`, data)
 }
-export const getReport = async (id: string) => {
-  return await api.post(`/report/retrieve/${id}/`)
+export const getReport = async (patient_id: string) => {
+  return await api.get(`/report/retrieve/${patient_id}/`)
+}
+export const getReportList = async () => {
+  return await api.get('/report/patients/list/')
+}
+
+export const getReportListByPatient = async (id: string) => {
+  return await api.get(`/report/patient/${id}/list/`)
 }
