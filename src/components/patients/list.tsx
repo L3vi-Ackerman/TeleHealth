@@ -34,7 +34,7 @@ const PatientsList = () => {
   }
 
   return (
-    <div className="overflow-x-auto p-6">
+    <div className="overflow-x-auto ">
       <table className="min-w-full bg-blue-50 rounded-xl shadow-md overflow-hidden">
         <thead className="bg-blue-100">
           <tr>
