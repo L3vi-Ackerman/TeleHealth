@@ -1,15 +1,18 @@
-import { useQueryState } from 'nuqs'
 import { useGetDepartmentsList } from '@/hooks/department/queries'
 import { useNavigate } from '@tanstack/react-router'
-import type { ListDepartment } from '@/core/types/department.type'
 import { motion } from 'framer-motion'
+import type { ListDepartment } from '@/core/types/department.type'
 
-const DepartmentList = () => {
+interface DepartmentListProps {
+  searchQuery?: string
+}
+
+const DepartmentList = ({ searchQuery = '' }: DepartmentListProps) => {
   const navigate = useNavigate()
-  const [search] = useQueryState('departments', { defaultValue: '' })
-  const { data, isLoading, isError } = useGetDepartmentsList({
-    name__icontains: search ?? '',
-  })
+
+  // Only include the filter if searchQuery is non-empty
+  const queryParams = searchQuery ? { name__icontains: searchQuery } : {}
+  const { data, isLoading, isError } = useGetDepartmentsList(queryParams)
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error loading departments</div>
