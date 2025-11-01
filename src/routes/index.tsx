@@ -1,5 +1,5 @@
 import CommonFooter from '@/components/common/common-footer'
-import { CommonNav } from '@/components/common/common-nav'
+import { LandingNav } from '@/components/common/landing-nav'
 import AboutUs from '@/components/modules/landing/about-us'
 import Faq from '@/components/modules/landing/faq'
 import HeroSection from '@/components/modules/landing/hero-section'
@@ -23,7 +23,7 @@ export const Route = createFileRoute('/')({
 function Index() {
   return (
     <div className="p-2">
-      <CommonNav />
+      <LandingNav />
       <HeroSection />
       <AboutUs />
       <TrustedBy />
