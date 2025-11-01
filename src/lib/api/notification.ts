@@ -5,9 +5,9 @@ export const getNotifications = async () => {
 }
 
 export async function markNotificationRead(id: string) {
-  await api.post(`/notification/mark-read/${id}/`)
+  await api.put(`/notification/${id}/mark-as-read/`)
 }
 
 export async function markAllNotificationsRead() {
-  await api.post('/notification/mark-read-all/')
+  await api.post('/notification/mark-all-as-read/')
 }

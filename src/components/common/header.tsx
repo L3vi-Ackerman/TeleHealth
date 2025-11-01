@@ -18,7 +18,7 @@ export default function Header() {
         </div>
         <div>
           <h1 className="text-xl font-semibold text-black dark:text-white">
-            WorkFlow Pro
+            TeleHealth
           </h1>
         </div>
       </Link>

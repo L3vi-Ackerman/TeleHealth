@@ -9,32 +9,57 @@ import {
   markAllNotificationsRead,
   markNotificationRead,
 } from '@/lib/api/notification'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const queryClient = useQueryClient()
   const [userDropdownOpen, setUserDropdownOpen] = useState(false)
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false)
-  const { data, refetch } = useGetNotifications()
+  const { data } = useGetNotifications()
 
-  const unreadNotifications = data?.data?.filter((n: any) => !n.is_read) || []
-  const unreadCount = unreadNotifications.length
+  console.log('Noti', data)
+  const unreadNotifications =
+    data?.data?.results.filter((n: any) => !n.is_read) || []
+  const unreadCount = unreadNotifications?.length
 
   const user = {
     name: 'John Doe',
     email: 'john@example.com',
   }
 
-  const handleMarkRead = async (id: string) => {
-    await markNotificationRead(id)
-    refetch()
+  const { mutate: mutateNotification } = useMutation({
+    mutationFn: markNotificationRead,
+    onSuccess: () => {
+      toast.success('Notification marked as read!')
+      queryClient.invalidateQueries({ queryKey: ['notifications'] })
+    },
+    onError: () => {
+      toast.error('Failed to mark notification as read!')
+    },
+  })
+
+  const { mutate: mutateAllNotification } = useMutation({
+    mutationFn: markAllNotificationsRead,
+    onSuccess: () => {
+      toast.success('All notifications marked as read!')
+      queryClient.invalidateQueries({ queryKey: ['notifications'] })
+    },
+    onError: () => {
+      toast.error('Failed to mark all notifications as read!')
+    },
+  })
+
+  const handleMarkRead = (id: string) => {
+    mutateNotification(id)
   }
 
-  const handleMarkAllRead = async () => {
-    await markAllNotificationsRead()
-    refetch()
+  const handleMarkAllRead = () => {
+    mutateAllNotification()
   }
 
   return (
@@ -82,13 +107,13 @@ function RouteComponent() {
                       )}
                     </div>
 
-                    {data?.data?.length === 0 ? (
+                    {data?.data?.results?.length === 0 ? (
                       <p className="text-xs text-muted-foreground px-4 py-2">
                         No notifications
                       </p>
                     ) : (
                       <ul className="flex flex-col">
-                        {data?.data?.map((notif: any) => (
+                        {data?.data?.results?.map((notif: any) => (
                           <li
                             key={notif?.id}
                             onClick={() =>
