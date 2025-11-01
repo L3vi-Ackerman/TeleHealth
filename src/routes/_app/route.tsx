@@ -100,7 +100,7 @@ function RouteComponent() {
         {/* Dashboard side bar */}
         <AppSidebar />
         <div className="flex flex-col flex-1 h-screen overflow-hidden">
-          <nav className="flex items-center justify-between w-full px-6 py-4 border-b bg-background shadow-sm">
+          <nav className="flex items-center justify-between w-full px-2 border-b bg-background shadow-sm">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
             </div>

@@ -7,13 +7,14 @@ export const Route = createFileRoute('/_app/patients/')({
 
 function RouteComponent() {
   return (
-    <div>
-      {' '}
-      <div className="flex items-center justify-between space-y-2 border-b mb-4">
-        <div>
-          <h1 className="text-3xl font-medium my-4">Patients</h1>
+    <div className="container mx-auto px-2  animate-fade-in">
+      <div className="flex flex-col sm:flex-row justify-between items-center border-b pb-4 mb-6">
+        <h1 className="text-4xl font-extrabold bg-primary bg-clip-text text-transparent tracking-tight">
+          Patients
+        </h1>
+        <div className="mt-4 sm:mt-0">
+          <PatientDialog />
         </div>
-        <PatientDialog />
       </div>
       <PatientsList />
     </div>
