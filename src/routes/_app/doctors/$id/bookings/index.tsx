@@ -72,6 +72,7 @@ function RouteComponent() {
                 Dr. {docData?.user?.first_name ?? 'Unknown'}{' '}
                 {docData?.user?.last_name ?? ''}
               </h3>
+              <p>Email: {docData?.user?.email}</p>
               <p>Department: {docData?.department?.name ?? 'N/A'}</p>
               <p>
                 Hospital:{' '}

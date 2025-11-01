@@ -13,10 +13,11 @@ import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthLoginIndexRouteImport } from './routes/_auth/login/index'
+import { Route as AppPatientsIndexRouteImport } from './routes/_app/patients/index'
 import { Route as AppHospitalsIndexRouteImport } from './routes/_app/hospitals/index'
 import { Route as AppDoctorsIndexRouteImport } from './routes/_app/doctors/index'
 import { Route as AppDepartmentsIndexRouteImport } from './routes/_app/departments/index'
-import { Route as AppAppointmentsIndexRouteImport } from './routes/_app/appointments/index'
+import { Route as AppPatientsIdIndexRouteImport } from './routes/_app/patients/$id/index'
 import { Route as AppMeetingIdIndexRouteImport } from './routes/_app/meeting/$id/index'
 import { Route as AppDepartmentsIdIndexRouteImport } from './routes/_app/departments/$id/index'
 import { Route as AppDoctorsIdBookingsIndexRouteImport } from './routes/_app/doctors/$id/bookings/index'
@@ -40,6 +41,11 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthLoginRouteRoute,
 } as any)
+const AppPatientsIndexRoute = AppPatientsIndexRouteImport.update({
+  id: '/patients/',
+  path: '/patients/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppHospitalsIndexRoute = AppHospitalsIndexRouteImport.update({
   id: '/hospitals/',
   path: '/hospitals/',
@@ -55,9 +61,9 @@ const AppDepartmentsIndexRoute = AppDepartmentsIndexRouteImport.update({
   path: '/departments/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppAppointmentsIndexRoute = AppAppointmentsIndexRouteImport.update({
-  id: '/appointments/',
-  path: '/appointments/',
+const AppPatientsIdIndexRoute = AppPatientsIdIndexRouteImport.update({
+  id: '/patients/$id/',
+  path: '/patients/$id/',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppMeetingIdIndexRoute = AppMeetingIdIndexRouteImport.update({
@@ -80,24 +86,26 @@ const AppDoctorsIdBookingsIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof AuthLoginRouteRouteWithChildren
-  '/appointments': typeof AppAppointmentsIndexRoute
   '/departments': typeof AppDepartmentsIndexRoute
   '/doctors': typeof AppDoctorsIndexRoute
   '/hospitals': typeof AppHospitalsIndexRoute
+  '/patients': typeof AppPatientsIndexRoute
   '/login/': typeof AuthLoginIndexRoute
   '/departments/$id': typeof AppDepartmentsIdIndexRoute
   '/meeting/$id': typeof AppMeetingIdIndexRoute
+  '/patients/$id': typeof AppPatientsIdIndexRoute
   '/doctors/$id/bookings': typeof AppDoctorsIdBookingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/appointments': typeof AppAppointmentsIndexRoute
   '/departments': typeof AppDepartmentsIndexRoute
   '/doctors': typeof AppDoctorsIndexRoute
   '/hospitals': typeof AppHospitalsIndexRoute
+  '/patients': typeof AppPatientsIndexRoute
   '/login': typeof AuthLoginIndexRoute
   '/departments/$id': typeof AppDepartmentsIdIndexRoute
   '/meeting/$id': typeof AppMeetingIdIndexRoute
+  '/patients/$id': typeof AppPatientsIdIndexRoute
   '/doctors/$id/bookings': typeof AppDoctorsIdBookingsIndexRoute
 }
 export interface FileRoutesById {
@@ -105,13 +113,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRouteRouteWithChildren
-  '/_app/appointments/': typeof AppAppointmentsIndexRoute
   '/_app/departments/': typeof AppDepartmentsIndexRoute
   '/_app/doctors/': typeof AppDoctorsIndexRoute
   '/_app/hospitals/': typeof AppHospitalsIndexRoute
+  '/_app/patients/': typeof AppPatientsIndexRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
   '/_app/departments/$id/': typeof AppDepartmentsIdIndexRoute
   '/_app/meeting/$id/': typeof AppMeetingIdIndexRoute
+  '/_app/patients/$id/': typeof AppPatientsIdIndexRoute
   '/_app/doctors/$id/bookings/': typeof AppDoctorsIdBookingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -119,37 +128,40 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
-    | '/appointments'
     | '/departments'
     | '/doctors'
     | '/hospitals'
+    | '/patients'
     | '/login/'
     | '/departments/$id'
     | '/meeting/$id'
+    | '/patients/$id'
     | '/doctors/$id/bookings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/appointments'
     | '/departments'
     | '/doctors'
     | '/hospitals'
+    | '/patients'
     | '/login'
     | '/departments/$id'
     | '/meeting/$id'
+    | '/patients/$id'
     | '/doctors/$id/bookings'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_auth/login'
-    | '/_app/appointments/'
     | '/_app/departments/'
     | '/_app/doctors/'
     | '/_app/hospitals/'
+    | '/_app/patients/'
     | '/_auth/login/'
     | '/_app/departments/$id/'
     | '/_app/meeting/$id/'
+    | '/_app/patients/$id/'
     | '/_app/doctors/$id/bookings/'
   fileRoutesById: FileRoutesById
 }
@@ -189,6 +201,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginIndexRouteImport
       parentRoute: typeof AuthLoginRouteRoute
     }
+    '/_app/patients/': {
+      id: '/_app/patients/'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof AppPatientsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/hospitals/': {
       id: '/_app/hospitals/'
       path: '/hospitals'
@@ -210,11 +229,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDepartmentsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/appointments/': {
-      id: '/_app/appointments/'
-      path: '/appointments'
-      fullPath: '/appointments'
-      preLoaderRoute: typeof AppAppointmentsIndexRouteImport
+    '/_app/patients/$id/': {
+      id: '/_app/patients/$id/'
+      path: '/patients/$id'
+      fullPath: '/patients/$id'
+      preLoaderRoute: typeof AppPatientsIdIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/meeting/$id/': {
@@ -242,22 +261,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteRouteChildren {
-  AppAppointmentsIndexRoute: typeof AppAppointmentsIndexRoute
   AppDepartmentsIndexRoute: typeof AppDepartmentsIndexRoute
   AppDoctorsIndexRoute: typeof AppDoctorsIndexRoute
   AppHospitalsIndexRoute: typeof AppHospitalsIndexRoute
+  AppPatientsIndexRoute: typeof AppPatientsIndexRoute
   AppDepartmentsIdIndexRoute: typeof AppDepartmentsIdIndexRoute
   AppMeetingIdIndexRoute: typeof AppMeetingIdIndexRoute
+  AppPatientsIdIndexRoute: typeof AppPatientsIdIndexRoute
   AppDoctorsIdBookingsIndexRoute: typeof AppDoctorsIdBookingsIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppAppointmentsIndexRoute: AppAppointmentsIndexRoute,
   AppDepartmentsIndexRoute: AppDepartmentsIndexRoute,
   AppDoctorsIndexRoute: AppDoctorsIndexRoute,
   AppHospitalsIndexRoute: AppHospitalsIndexRoute,
+  AppPatientsIndexRoute: AppPatientsIndexRoute,
   AppDepartmentsIdIndexRoute: AppDepartmentsIdIndexRoute,
   AppMeetingIdIndexRoute: AppMeetingIdIndexRoute,
+  AppPatientsIdIndexRoute: AppPatientsIdIndexRoute,
   AppDoctorsIdBookingsIndexRoute: AppDoctorsIdBookingsIndexRoute,
 }
 
