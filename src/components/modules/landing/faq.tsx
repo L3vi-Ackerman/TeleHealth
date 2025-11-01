@@ -17,7 +17,7 @@ interface Faq1Props {
 }
 
 const Faq1 = ({
-  heading = 'Frequently asked questions',
+  heading = 'Frequently Asked Questions',
   items = [
     {
       id: 'faq1',
@@ -75,27 +75,45 @@ const Faq1 = ({
   ],
 }: Faq1Props) => {
   return (
-    <section className="w-full min-h-screen flex flex-col md:flex-row items-start justify-center gap-12 p-8 bg-[var(--background)] text-[var(--foreground)] font-sans">
-      <div className="container max-w-3xl">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
-          {heading}
-        </h1>
-        <p className="text-lg md:text-xl text-[var(--foreground)] mb-8 leading-relaxed">
-          Here are the common questions regarding health emergencies in rural
-          areas. Expand each to see detailed guidance and practical solutions.
-        </p>
-        <Accordion type="single" collapsible>
+    <section
+      id="faq"
+      className="w-full flex justify-center items-start p-12 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans"
+    >
+      <div className="max-w-6xl w-full space-y-10">
+        {/* Heading */}
+        <div className="text-center">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-green-400">
+            {heading}
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+            Explore common questions about rural health emergencies. Click each
+            item to get practical solutions and insights.
+          </p>
+        </div>
+
+        {/* Accordion in 2 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {items.map((item, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="font-semibold hover:no-underline text-lg">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-base bg-card">
-                {item.answer}
-              </AccordionContent>
-            </AccordionItem>
+            <Accordion
+              key={item.id}
+              type="single"
+              collapsible
+              className="space-y-4"
+            >
+              <AccordionItem
+                value={`item-${index}`}
+                className="border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow duration-300"
+              >
+                <AccordionTrigger className="flex justify-between items-center p-4 font-semibold text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors duration-200">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="p-4 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 rounded-b-xl">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           ))}
-        </Accordion>
+        </div>
       </div>
     </section>
   )

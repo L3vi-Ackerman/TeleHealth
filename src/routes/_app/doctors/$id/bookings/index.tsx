@@ -50,10 +50,12 @@ function RouteComponent() {
   }, [slots, selectedDate])
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex items-center justify-between space-y-2 border-b mb-4">
+    <div className="container mx-auto px-6">
+      <div className="flex items-center justify-between space-y-2 border-b mb-4 pb-6">
         <div>
-          <h1 className="text-3xl font-medium my-4">Appointments</h1>
+          <h1 className="text-4xl font-extrabold bg-primary bg-clip-text text-transparent tracking-tight">
+            Appointments
+          </h1>
         </div>
       </div>
 
@@ -72,13 +74,9 @@ function RouteComponent() {
                 Dr. {docData?.user?.first_name ?? 'Unknown'}{' '}
                 {docData?.user?.last_name ?? ''}
               </h3>
+              <p>Email: {docData?.user?.email}</p>
               <p>Department: {docData?.department?.name ?? 'N/A'}</p>
-              <p>
-                Hospital:{' '}
-                {typeof docData?.hospital === 'object' && docData?.hospital
-                  ? docData?.hospital?.name
-                  : 'N/A'}
-              </p>
+              <p>Hospital: {docData?.department?.hospital?.name}</p>
               <p>Contact: {docData?.contact}</p>
               <p>Experience: {docData?.experience_years} years</p>
               <p>

@@ -41,7 +41,7 @@ const JoinUs = () => {
           alt="TeleHealth Join Us"
           width={150}
           height={150}
-          className="drop-shadow-lg w-[35rem]"
+          className="drop-shadow-lg w-[35rem] rounded-bl-[300px] "
         />
       </motion.div>
     </section>

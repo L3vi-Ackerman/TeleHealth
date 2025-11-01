@@ -29,7 +29,7 @@ function RouteComponent() {
   const doctors = data?.data?.results || []
 
   return (
-    <div className="container mx-auto px-6 py-10 space-y-8 animate-fade-in">
+    <div className="container mx-auto px-6 pb-10 space-y-8 animate-fade-in">
       <h1 className="text-4xl font-extrabold bg-primary bg-clip-text text-transparent tracking-tight border-b pb-4">
         Doctors in Department
       </h1>
