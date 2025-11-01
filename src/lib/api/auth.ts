@@ -1,23 +1,22 @@
-import { refreshToken } from './refresh'
+import type { LoginRequest, LoginResponse } from '@/core/types/auth.type'
+import api from '@/lib/axios'
 
-export async function refreshAccessToken() {
-  const refresh_token = localStorage.getItem('refresh_token')
-  if (!refresh_token) return null
+export const refreshToken = async (refresh_token: string) => {
+  const res = await api.post('/auth/token/refresh/', { refresh: refresh_token })
+  return res.data
+}
 
-  try {
-    const res = await refreshToken(refresh_token)
-    const { access, refresh } = res
-    if (access) {
-      localStorage.setItem('access_token', access)
-      if (refresh) {
-        localStorage.setItem('refresh_token', refresh)
-      }
-      return access
-    }
+export const login = async ({
+  email,
+  password,
+}: LoginRequest): Promise<LoginResponse> => {
+  const res = await api.post('/gatekeeper/token/', {
+    email,
+    password,
+  })
+  return res.data
+}
 
-    return access
-  } catch (err) {
-    console.error('Failed to refresh token', err)
-    return null
-  }
+export const getMe = async () => {
+  return await api.get('/gatekeeper/user/me/')
 }

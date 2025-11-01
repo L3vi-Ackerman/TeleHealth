@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { HTTPStatusCode } from '@/core/enums/status-code'
 import { handleApiException } from '@/lib/handle-api-exceptions'
-import { refreshAccessToken } from './api/auth'
+import { refreshAccessToken } from './api/refresh'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
