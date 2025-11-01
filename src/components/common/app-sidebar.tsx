@@ -1,4 +1,4 @@
-import { Hospital, Stethoscope, Calendar, Settings, Blocks } from 'lucide-react'
+import { Hospital, Stethoscope, Settings, Blocks } from 'lucide-react'
 
 import {
   Sidebar,
@@ -27,12 +27,6 @@ const items = [
     title: 'Doctors',
     url: '/doctors',
     icon: Stethoscope,
-  },
-
-  {
-    title: 'Appointment',
-    url: '/appointments',
-    icon: Calendar,
   },
   {
     title: 'Profile',
