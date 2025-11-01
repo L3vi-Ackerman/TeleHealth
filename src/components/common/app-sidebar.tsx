@@ -1,4 +1,4 @@
-import { Hospital, Stethoscope, User, Blocks, Calendar } from 'lucide-react'
+import { Hospital, Stethoscope, User, Blocks } from 'lucide-react'
 
 import {
   Sidebar,

@@ -2,7 +2,7 @@ import { useGetReport } from '@/hooks/report/queries'
 import { ReportCard } from '@/components/reports/card'
 import { createFileRoute } from '@tanstack/react-router'
 import { ReportDialog } from '@/components/reports/dialog'
-
+import type { Report } from '@/components/reports/card'
 export const Route = createFileRoute('/_app/patients/$id/')({
   component: RouteComponent,
 })
@@ -11,7 +11,7 @@ function RouteComponent() {
   const { id } = Route.useParams()
   const { data } = useGetReport(id)
 
-  console.log(data)
+  console.log(data?.data?.results)
 
   return (
     <div>
@@ -25,7 +25,7 @@ function RouteComponent() {
       </div>
 
       <div className="p-4">
-        {data?.data?.results?.map((r) => (
+        {data?.data?.results?.map((r: Report) => (
           <ReportCard key={r.id} report={r} />
         ))}
       </div>

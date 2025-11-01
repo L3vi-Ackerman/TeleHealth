@@ -1,4 +1,4 @@
-import { getReport, getReportListByPatient } from '@/lib/api/report'
+import { getReportListByPatient } from '@/lib/api/report'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetReport = (id: string) => {

@@ -1,20 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-interface ReportCardProps {
-  report: {
+export type Report = {
+  id: string
+  doctor: {
     id: string
+    user: {
+      id: string
+      email: string
+      first_name: string
+      last_name: string
+      role: string
+    }
     created_at: string
     updated_at: string
-    created_by: string
-    doctor: string
-    patient: string
-    diagnosis: string
-    prescription: string
-    report_date: string
   }
+  created_by: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+    role: string
+  }
+  created_at: string
+  updated_at: string
+  diagnosis: string
+  prescription: string
+  report_date: string
+  patient: string
 }
 
-export function ReportCard({ report }: ReportCardProps) {
+export function ReportCard({ report }: { report: Report }) {
   return (
     <Card className="w-full mx-auto my-4 shadow-md">
       <CardHeader>
@@ -32,12 +47,8 @@ export function ReportCard({ report }: ReportCardProps) {
           {report.prescription}
         </div>
         <div>
-          <span className="font-semibold">Doctor ID: </span>
-          {report.doctor}
-        </div>
-        <div>
-          <span className="font-semibold">Patient ID: </span>
-          {report.patient}
+          <span className="font-semibold">Doctor: </span>
+          {report.doctor?.user?.first_name} {report.doctor?.user?.last_name}
         </div>
         <div>
           <span className="font-semibold">Report Date: </span>
@@ -53,7 +64,8 @@ export function ReportCard({ report }: ReportCardProps) {
         </div>
         <div>
           <span className="font-semibold">Created By: </span>
-          {report.created_by}
+          {report.created_by.first_name} {report.created_by.last_name} (
+          {report.created_by.email})
         </div>
       </CardContent>
     </Card>

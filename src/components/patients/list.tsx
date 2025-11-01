@@ -67,15 +67,23 @@ const PatientsList = () => {
                 navigate({ to: '/patients/$id', params: { id: patient.id } })
               }
             >
-              <td className="px-6 py-4 text-sm ">{patient.first_name}</td>
-              <td className="px-6 py-4 text-sm ">{patient.last_name}</td>
-              <td className="px-6 py-4 text-sm ">{patient.phone}</td>
-              <td className="px-6 py-4 text-sm ">{patient.address}</td>
-              <td className="px-6 py-4 text-sm ">{patient.age}</td>
-              <td className="px-6 py-4 text-sm ">{patient.gender}</td>
-              <td className="px-6 py-4 text-sm ">{patient.blood_group}</td>
-              <td className="px-6 py-4 text-sm ">{patient.weight}</td>
-              <td className="px-6 py-4 text-sm ">{patient.blood_pressure}</td>
+              <td className="px-6 py-4 text-sm ">
+                {String(patient.first_name)}
+              </td>
+              <td className="px-6 py-4 text-sm ">
+                {String(patient.last_name)}
+              </td>
+              <td className="px-6 py-4 text-sm ">{String(patient.phone)}</td>
+              <td className="px-6 py-4 text-sm ">{String(patient.address)}</td>
+              <td className="px-6 py-4 text-sm ">{String(patient.age)}</td>
+              <td className="px-6 py-4 text-sm ">{String(patient.gender)}</td>
+              <td className="px-6 py-4 text-sm ">
+                {String(patient.blood_group)}
+              </td>
+              <td className="px-6 py-4 text-sm ">{String(patient.weight)}</td>
+              <td className="px-6 py-4 text-sm ">
+                {String(patient.blood_pressure)}
+              </td>
             </tr>
           ))}
         </tbody>
