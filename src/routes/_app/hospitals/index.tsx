@@ -1,8 +1,10 @@
+'use client'
 import { createFileRoute } from '@tanstack/react-router'
 import { useGetHospitalList } from '@/hooks/hospital/queries'
 import { MapPin, Phone } from 'lucide-react'
 import { motion } from 'framer-motion'
-import DepartmentSearch from '@/components/departments/filter'
+import { useState } from 'react'
+import CommonSearch from '@/components/common/common-search'
 
 export const Route = createFileRoute('/_app/hospitals/')({
   component: RouteComponent,
@@ -22,6 +24,11 @@ export interface Hospital {
 
 function RouteComponent() {
   const { data: hospitals } = useGetHospitalList()
+  const [query, setQuery] = useState('')
+
+  const filteredHospitals = hospitals?.data?.results?.filter((h: Hospital) =>
+    h.name.toLowerCase().includes(query.toLowerCase()),
+  )
 
   return (
     <div className="container mx-auto px-6 pb-10 space-y-10 animate-fade-in">
@@ -29,9 +36,11 @@ function RouteComponent() {
         <h1 className="text-4xl font-extrabold bg-primary bg-clip-text text-transparent tracking-tight">
           Hospitals
         </h1>
-        <div className="mt-4 sm:mt-0">
-          <DepartmentSearch />
-        </div>
+        <CommonSearch
+          onSearch={setQuery}
+          placeholder="Search hospitals..."
+          className="mt-4 sm:mt-0 w-[400px]"
+        />
       </div>
 
       <motion.div
@@ -40,7 +49,7 @@ function RouteComponent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        {hospitals?.data?.results?.map((h: Hospital, i: number) => (
+        {filteredHospitals?.map((h: Hospital, i: number) => (
           <motion.div
             key={h.id}
             className="bg-card border border-border rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 animate-fade-in-up"
@@ -76,14 +85,16 @@ function RouteComponent() {
                   <Phone className="w-4 h-4 text-primary" />
                   {h?.contact}
                 </div>
-                {/* <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  {new Date(h.created_at).toLocaleDateString()}
-                </div> */}
               </div>
             </div>
           </motion.div>
         ))}
+
+        {filteredHospitals?.length === 0 && (
+          <p className="col-span-full text-center text-gray-500">
+            No hospitals match your search.
+          </p>
+        )}
       </motion.div>
     </div>
   )
